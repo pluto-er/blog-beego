@@ -1,9 +1,10 @@
 package models
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 	"fmt"
-	"jkoa/src/github.com/gogather/com"
 	"reflect"
 	"strings"
 
@@ -33,7 +34,7 @@ func UserLogin(phone string, password string) (err error, user []User) {
 	query := model.QueryTable("user")
 	data := orm.NewCondition()
 	data = data.And("phone", phone)
-	pwdMd5 := com.Md5(password)
+	pwdMd5 := MD5(password)
 	data = data.And("password", pwdMd5)
 	data = data.And("status", 1)
 	query = query.SetCond(data)
@@ -42,6 +43,12 @@ func UserLogin(phone string, password string) (err error, user []User) {
 
 	return err1, users
 
+}
+
+func MD5(text string) string {
+	ctx := md5.New()
+	ctx.Write([]byte(text))
+	return hex.EncodeToString(ctx.Sum(nil))
 }
 
 // AddUser insert a new User into database and returns
