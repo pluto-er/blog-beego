@@ -1,7 +1,7 @@
 package initial
 
 import (
-	"beegoblog/utils"
+	"pluto-blog/utils"
 
 	"github.com/astaxie/beego"
 )
